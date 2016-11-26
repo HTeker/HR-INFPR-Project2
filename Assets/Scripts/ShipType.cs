@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Scripts
 {
-    public enum ShipColor
+    public enum ShipType
     {
         Red,
         Green,

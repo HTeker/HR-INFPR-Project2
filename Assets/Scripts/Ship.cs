@@ -8,7 +8,7 @@ namespace Scripts
     {
         private bool isLoaded;
         private DockingStation destionation;
-        private ShipColor color;
+        private ShipType type;
 
         public float TimeOfArrival { get; set; }
 
@@ -17,7 +17,7 @@ namespace Scripts
             throw new NotImplementedException();
         }
 
-        public ShipColor GetColor()
+        public ShipType GetColor()
         {
             throw new NotImplementedException();
         }

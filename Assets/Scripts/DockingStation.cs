@@ -9,7 +9,15 @@ namespace Scripts {
     public class DockingStation : MonoBehaviour
     {
         [SerializeField]
-        private ShipColor color;
+        private ShipType type;
+
+        [SerializeField]
+        private GameObject dockPosition;
+        public GameObject DockPosition { get { return dockPosition; } }
+
+        [SerializeField]
+        private GameObject undockPosition;
+        public GameObject UndockPosition { get { return undockPosition; } }
 
         private Ship undockedShip;
         private Queue<Ship> dockedShips;
@@ -42,7 +50,7 @@ namespace Scripts {
 
         public void Enter(Ship ship)
         {
-            if (ship.GetColor() == color)
+            if (ship.GetColor() == type)
             {
                 this.LogMessage("Ship entered dock");
                 dockedShips.Enqueue(ship);

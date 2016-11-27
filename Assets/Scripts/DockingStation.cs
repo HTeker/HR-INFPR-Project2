@@ -54,6 +54,7 @@ namespace Scripts {
             {
                 this.LogMessage("Ship entered dock");
                 dockedShips.Enqueue(ship);
+                ship.isInStation = true;
             }
             else
             {
@@ -67,14 +68,21 @@ namespace Scripts {
         {
             if (Global.CurrentSelectedShip != null)
             {
-                this.LogMessage("Set ship desionation");
-                Global.CurrentSelectedShip.SetDestionation(this);
+                if (Global.CurrentSelectedShip.isInStation)
+                {
+                    Global.CurrentSelectedShip.Deselect();
+                    return;
+                }
+                this.LogMessage("Set ship destination");
+                Global.CurrentSelectedShip.SetDestination(this);
             }
             else
             {
                 if (undockedShip != null)
                 {
                     undockedShip.Undock();
+                    undockedShip.isInStation = false;
+
                     this.LogMessage("Undock ship");
                 }
                 else

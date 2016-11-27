@@ -11,13 +11,10 @@ namespace Scripts
         [Header("Globals")]
         [SerializeField]
         private float timeToUnloadShip;
-        [SerializeField]
-        private float shipSpeed;
 
         private void Start()
         {
             Global.TimeToUnloadShip = timeToUnloadShip;
-            Global.ShipSpeed = shipSpeed;
         }
 
         private void Update()

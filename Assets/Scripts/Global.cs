@@ -10,6 +10,5 @@ namespace Scripts
         public static float TimeToUnloadShip { get; set; }
         public static Ship CurrentSelectedShip { get; set; }
         public static float GameTime { get; set; }
-        public static float ShipSpeed { get; set; }
     }
 }

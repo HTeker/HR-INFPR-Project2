@@ -6,9 +6,10 @@ namespace Scripts
 {
     public class Ship : MonoBehaviour
     {
+        [SerializeField]
+        private ShipType type;
         private bool isLoaded;
         private DockingStation destionation;
-        private ShipType type;
 
         public float TimeOfArrival { get; set; }
 
@@ -17,9 +18,9 @@ namespace Scripts
             throw new NotImplementedException();
         }
 
-        public ShipType GetColor()
+        public ShipType GetShipType()
         {
-            throw new NotImplementedException();
+            return type;
         }
 
         public void Click()

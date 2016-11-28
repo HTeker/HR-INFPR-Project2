@@ -33,27 +33,31 @@ namespace Scripts {
             if (canvas)
             {
                 timerText = canvas.GetComponentInChildren<Text>();
+                if (!timerText)
+                {
+                    this.LogMessage("Timer text not found", LogType.Error);
+                }
+            } 
+            else
+            {
+                this.LogMessage("Canvas not found", LogType.Error);
             }
         }
 
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            dockedShips = new Queue<Ship>();
-            canvas = GetComponentInChildren<Canvas>();
-            if (canvas)
-            {
-                timerText = canvas.GetComponentInChildren<Text>();
-            }
+            Start();
         }
 #endif
 
         public void Enter(Ship ship)
         {
-            if (ship.GetColor() == type)
+            if (ship.GetShipType() == type)
             {
                 this.LogMessage("Ship entered dock");
                 dockedShips.Enqueue(ship);
+                ship.enabled = false;
             }
             else
             {
@@ -102,6 +106,10 @@ namespace Scripts {
                     }
 
                     undockedShip = dockedShips.Dequeue();
+
+                    undockedShip.enabled = true;
+                    undockedShip.transform.position = undockPosition.transform.position;
+                    undockedShip.transform.rotation = UndockPosition.transform.rotation;
                 }
             }
 
@@ -113,11 +121,19 @@ namespace Scripts {
 
                 canvas.transform.LookAt(lookatPoint);
             }
+            else
+            {
+                this.LogMessage("Canvas not available", LogType.Error);
+            }
 
             if (timerText)
             {
                 timerText.text = (timeLeft.HasValue ? timeLeft.ToString() : "∞");
             }
+            else
+            {
+                this.LogMessage("Timer text not available", LogType.Error);
+            } 
         }
     }
 }

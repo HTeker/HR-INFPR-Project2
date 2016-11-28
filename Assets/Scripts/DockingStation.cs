@@ -72,7 +72,7 @@ namespace Scripts {
             if (Global.CurrentSelectedShip != null)
             {
                 this.LogMessage("Set ship desionation");
-                Global.CurrentSelectedShip.SetDestionation(this);
+                Global.CurrentSelectedShip.SetDestination(this);
             }
             else
             {

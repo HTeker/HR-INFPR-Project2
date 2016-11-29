@@ -6,10 +6,11 @@ namespace Scripts
 {
     public class Ship : MonoBehaviour
     {
-        private bool isLoaded = true;
-        private DockingStation destination = null;
-        public bool isInStation = false;
+        [SerializeField]
         private ShipType type;
+        private bool isLoaded = true;
+        private DockingStation destination;
+        private bool isUndocked;
 
         public float TimeOfArrival { get; set; }
 
@@ -26,19 +27,21 @@ namespace Scripts
         public void Click()
         {
             Debug.Log("Ship clicked");
-            if (destination != null)
-                if (isLoaded && Vector3.Distance(destination.DockPosition.transform.position, this.transform.position) > 10.0f)
-                    if (Global.CurrentSelectedShip != null)
-                        Global.CurrentSelectedShip.Deselect();
 
-            if (Global.CurrentSelectedShip == this)
-            {
-                this.Deselect();
-            }
-            else
-            {
-                Global.CurrentSelectedShip = this;
-            }
+            if (Global.CurrentSelectedShip && Global.CurrentSelectedShip != this)
+                Global.CurrentSelectedShip.Deselect();
+
+            if (!isLoaded)
+                return;
+
+            if (destination && Vector3.Distance(transform.position, destination.DockPosition.transform.position) < Global.MinimalDistanceToChangeShipDestination)
+                return;
+
+            if (!destination && /* To close to wall */ false)
+                return;
+
+            if (Global.CurrentSelectedShip != this)
+                Select();
         }
 
         public void Deselect()
@@ -46,9 +49,23 @@ namespace Scripts
             Global.CurrentSelectedShip = null;
         }
 
+        public void Select()
+        {
+            if (Global.CurrentSelectedShip)
+                Global.CurrentSelectedShip.Deselect();
+
+            Global.CurrentSelectedShip = this;
+        }
+
+        public void ReadyToUndock()
+        {
+            isLoaded = false;
+            // Remove containers from ship
+        }
+
         public void Undock()
         {
-            throw new NotImplementedException();
+            isUndocked = true;
         }
 
         // Use this for initialization
@@ -60,37 +77,36 @@ namespace Scripts
         // Update is called once per frame
         void Update()
         {
-            if (isInStation)
-                return;
+            if (isLoaded)
+            {
+                if (destination)
+                {
+                    transform.LookAt(destination.DockPosition.transform.position);
+                    transform.position += Global.ShipSpeedWithDestionation * Time.deltaTime * transform.forward;
 
-            if(destination == null && this.transform.position.x < 550.0f)
-            {
-                Vector3 shipPos = this.transform.position;
-                shipPos.x = shipPos.x + Global.ShipSpeed * Time.deltaTime;
-                this.transform.position = shipPos;
-                Vector3 lookAtPos = shipPos;
-                shipPos.x += 10;
-                this.transform.LookAt(shipPos);
+                    if (Vector3.Distance(transform.position, destination.DockPosition.transform.position) < Global.MinimalDistanceToChangeShipDestination)
+                        if (Global.CurrentSelectedShip == this)
+                            Deselect();
+
+                    if (Vector3.Distance(transform.position, destination.DockPosition.transform.position) < Global.ShipSpeedWithDestionation * Time.deltaTime)
+                        destination.Enter(this);
+                }
+                else
+                {
+                    transform.position += Global.ShipSpeed * Time.deltaTime * transform.forward;
+                }
             }
-            else if (isLoaded && Vector3.Distance(destination.DockPosition.transform.position, this.transform.position) > 10.0f)
+            else
             {
-                Vector3 shipPos = this.transform.position;
-                shipPos += this.transform.forward * Global.ShipSpeed * Time.deltaTime;
-                this.transform.position = shipPos;
-                this.transform.LookAt(destination.DockPosition.transform);
-            }
-            else if(isLoaded == false)
-            {
-                Vector3 shipPos = this.transform.position;
-                shipPos.x = shipPos.x - Global.ShipSpeed * Time.deltaTime;
-                this.transform.position = shipPos;
-                Vector3 lookAtPos = shipPos;
-                shipPos.x -= 10;
-                this.transform.LookAt(shipPos);
-            }
-            else if(isLoaded && destination != null)
-            {
-                destination.Enter(this);
+                if (isUndocked)
+                {
+                    transform.position += Global.ShipSpeedWithDestionation * Time.deltaTime * transform.forward;
+
+                    if (/* ouside view*/ false)
+                    {
+                        // Remove
+                    }
+                }
             }
         }
     }

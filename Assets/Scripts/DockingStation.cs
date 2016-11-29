@@ -57,7 +57,8 @@ namespace Scripts {
             {
                 this.LogMessage("Ship entered dock");
                 dockedShips.Enqueue(ship);
-                ship.enabled = false;
+                ship.TimeOfArrival = Global.GameTime;
+                ship.gameObject.SetActive(false);
             }
             else
             {
@@ -73,6 +74,7 @@ namespace Scripts {
             {
                 this.LogMessage("Set ship desionation");
                 Global.CurrentSelectedShip.SetDestination(this);
+                Global.CurrentSelectedShip.Deselect();
             }
             else
             {
@@ -107,9 +109,10 @@ namespace Scripts {
 
                     undockedShip = dockedShips.Dequeue();
 
-                    undockedShip.enabled = true;
+                    undockedShip.gameObject.SetActive(true);
                     undockedShip.transform.position = undockPosition.transform.position;
                     undockedShip.transform.rotation = UndockPosition.transform.rotation;
+                    undockedShip.ReadyToUndock();
                 }
             }
 
@@ -128,7 +131,7 @@ namespace Scripts {
 
             if (timerText)
             {
-                timerText.text = (timeLeft.HasValue ? timeLeft.ToString() : "∞");
+                timerText.text = (timeLeft.HasValue ? timeLeft.Value.ToString("n2") : "∞");
             }
             else
             {

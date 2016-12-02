@@ -534,10 +534,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b18af0178400074db6bd6e2d8f860d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToUnloadShip: 30
+  timeToUnloadShip: 6
   shipSpeed: 10
   shipSpeedWithDestination: 25
-  minimalDistanceToChangeShipDestination: 20
+  lineOfNoReturn: 500
+  lineOfOpenSea: 100
 --- !u!4 &96477956
 Transform:
   m_ObjectHideFlags: 0

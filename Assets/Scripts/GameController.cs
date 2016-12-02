@@ -16,14 +16,17 @@ namespace Scripts
         [SerializeField]
         private float shipSpeedWithDestination;
         [SerializeField]
-        private float minimalDistanceToChangeShipDestination;
+        private float lineOfNoReturn;
+        [SerializeField]
+        private float lineOfOpenSea;
 
         private void Start()
         {
             Global.TimeToUnloadShip = timeToUnloadShip;
             Global.ShipSpeed = shipSpeed;
             Global.ShipSpeedWithDestionation = shipSpeedWithDestination;
-            Global.MinimalDistanceToChangeShipDestination = minimalDistanceToChangeShipDestination;
+            Global.LineOfNoReturn = lineOfNoReturn;
+            Global.LineOfOpenSea = lineOfOpenSea;
         }
 
         private void Update()

@@ -8,6 +8,9 @@ namespace Scripts
     {
         [SerializeField]
         private ShipType type;
+        [SerializeField]
+        private GameObject containers;
+
         private bool isLoaded = true;
         private DockingStation destination;
         private bool isUndocked;
@@ -26,18 +29,13 @@ namespace Scripts
 
         public void Click()
         {
-            Debug.Log("Ship clicked");
-
             if (Global.CurrentSelectedShip && Global.CurrentSelectedShip != this)
                 Global.CurrentSelectedShip.Deselect();
 
             if (!isLoaded)
                 return;
 
-            if (destination && Vector3.Distance(transform.position, destination.DockPosition.transform.position) < Global.MinimalDistanceToChangeShipDestination)
-                return;
-
-            if (!destination && /* To close to wall */ false)
+            if (transform.position.x > Global.LineOfNoReturn)
                 return;
 
             if (Global.CurrentSelectedShip != this)
@@ -60,12 +58,13 @@ namespace Scripts
         public void ReadyToUndock()
         {
             isLoaded = false;
-            // Remove containers from ship
+            containers.SetActive(false);
         }
 
         public void Undock()
         {
             isUndocked = true;
+            // TODO increase score
         }
 
         // Use this for initialization
@@ -84,7 +83,7 @@ namespace Scripts
                     transform.LookAt(destination.DockPosition.transform.position);
                     transform.position += Global.ShipSpeedWithDestionation * Time.deltaTime * transform.forward;
 
-                    if (Vector3.Distance(transform.position, destination.DockPosition.transform.position) < Global.MinimalDistanceToChangeShipDestination)
+                    if (transform.position.x > Global.LineOfNoReturn)
                         if (Global.CurrentSelectedShip == this)
                             Deselect();
 
@@ -93,6 +92,12 @@ namespace Scripts
                 }
                 else
                 {
+                    if (transform.position.x > Global.LineOfNoReturn)
+                    {
+                        this.LogMessage("Ship has no destionation given in time");
+                        Destroy(gameObject);
+                        // TODO decrease score
+                    }
                     transform.position += Global.ShipSpeed * Time.deltaTime * transform.forward;
                 }
             }
@@ -100,12 +105,12 @@ namespace Scripts
             {
                 if (isUndocked)
                 {
-                    transform.position += Global.ShipSpeedWithDestionation * Time.deltaTime * transform.forward;
-
-                    if (/* ouside view*/ false)
+                    if (transform.position.x < Global.LineOfOpenSea)
                     {
-                        // Remove
+                        Destroy(gameObject);
                     }
+
+                    transform.position += Global.ShipSpeedWithDestionation * Time.deltaTime * transform.forward;
                 }
             }
         }

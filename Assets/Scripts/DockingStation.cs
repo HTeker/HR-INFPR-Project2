@@ -25,7 +25,6 @@ namespace Scripts {
         private Canvas canvas;
         private Text timerText;
 
-        // Use this for initialization
         void Start()
         {
             dockedShips = new Queue<Ship>();
@@ -55,7 +54,6 @@ namespace Scripts {
         {
             if (ship.GetShipType() == type)
             {
-                this.LogMessage("Ship entered dock");
                 dockedShips.Enqueue(ship);
                 ship.TimeOfArrival = Global.GameTime;
                 ship.gameObject.SetActive(false);
@@ -63,8 +61,8 @@ namespace Scripts {
             else
             {
                 this.LogMessage("Ship reached wrong dock");
-                // Verwijder huidig schip
-                // Decrease score
+                Destroy(ship.gameObject);
+                // TODO Decrease score
             }
         }
 
@@ -72,25 +70,15 @@ namespace Scripts {
         {
             if (Global.CurrentSelectedShip != null)
             {
-                this.LogMessage("Set ship desionation");
                 Global.CurrentSelectedShip.SetDestination(this);
                 Global.CurrentSelectedShip.Deselect();
             }
-            else
+            else if (undockedShip != null)
             {
-                if (undockedShip != null)
-                {
-                    undockedShip.Undock();
-                    this.LogMessage("Undock ship");
-                }
-                else
-                {
-                    this.LogMessage("No ship to undock");
-                }
+                undockedShip.Undock();
             }
         }
 
-        // Update is called once per frame
         void Update()
         {
             float? timeLeft = null;
@@ -99,12 +87,10 @@ namespace Scripts {
                 timeLeft = (dockedShips.Peek().TimeOfArrival + Global.TimeToUnloadShip) - Global.GameTime;
                 if (timeLeft <= 0)
                 {
-                    this.LogMessage("Ship ready to undock");
                     if (undockedShip != null)
                     {
-                        this.LogMessage("Already exists another undocked ship");
-                        // Verwijder current undocked ship
-                        // Decrease score
+                        Destroy(undockedShip.gameObject);
+                        // TODO Decrease score
                     }
 
                     undockedShip = dockedShips.Dequeue();

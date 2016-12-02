@@ -12,6 +12,7 @@ namespace Scripts
         public static float GameTime { get; set; }
         public static float ShipSpeed { get; set; }
         public static float ShipSpeedWithDestionation { get; set; }
-        public static float MinimalDistanceToChangeShipDestination { get; set; }
+        public static float LineOfNoReturn { get; set; }
+        public static float LineOfOpenSea { get; set; }
     }
 }

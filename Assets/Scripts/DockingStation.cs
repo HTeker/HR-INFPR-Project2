@@ -12,6 +12,12 @@ namespace Scripts {
         private ShipType type;
 
         [SerializeField]
+        private Material materialNormal;
+
+        [SerializeField]
+        private Material materialHighlight;
+
+        [SerializeField]
         private GameObject dockPosition;
         public GameObject DockPosition { get { return dockPosition; } }
 
@@ -81,12 +87,12 @@ namespace Scripts {
 
         public void OnMouseEnter()
         {
-            ChangeRenderers(Global.MaterialHighlight);
+            ChangeRenderers(materialHighlight);
         }
 
         public void OnMouseExit()
         {
-            ChangeRenderers(Global.MaterialNormal);
+            ChangeRenderers(materialNormal);
         }
 
         private void ChangeRenderers(Material mat)

@@ -73,9 +73,34 @@ namespace Scripts {
                 Global.CurrentSelectedShip.SetDestination(this);
                 Global.CurrentSelectedShip.Deselect();
             }
-            else if (undockedShip != null)
+            else
+            {
+                UndockCurrentShip();
+            }
+        }
+
+        public void OnMouseEnter()
+        {
+            ChangeRenderers(Global.MaterialHighlight);
+        }
+
+        public void OnMouseExit()
+        {
+            ChangeRenderers(Global.MaterialNormal);
+        }
+
+        private void ChangeRenderers(Material mat)
+        {
+            foreach (var renderer in GetComponentsInChildren<Renderer>())
+                renderer.material = mat;
+        }
+
+        public void UndockCurrentShip()
+        {
+            if (undockedShip != null)
             {
                 undockedShip.Undock();
+                undockedShip = null;
             }
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Scripts
 {
@@ -14,5 +15,8 @@ namespace Scripts
         public static float ShipSpeedWithDestionation { get; set; }
         public static float LineOfNoReturn { get; set; }
         public static float LineOfOpenSea { get; set; }
+
+        public static Material MaterialNormal { get; set; }
+        public static Material MaterialHighlight { get; set; } 
     }
 }

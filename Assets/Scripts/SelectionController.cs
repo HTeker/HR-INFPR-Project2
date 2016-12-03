@@ -21,7 +21,6 @@ namespace Scripts
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit, 1000.0f))
                 {
-                    Debug.Log(hit.transform.tag);
                     if (!hit.transform.CompareTag("Ship") && !hit.transform.CompareTag("DockingStation"))
                     {
                         if (Global.CurrentSelectedShip != null)

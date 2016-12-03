@@ -499,6 +499,8 @@ MonoBehaviour:
   shipSpeedWithDestination: 25
   lineOfNoReturn: 500
   lineOfOpenSea: 0
+  materialNormal: {fileID: 2100000, guid: 46f69b2efbd76a744906e46f98d0e35b, type: 2}
+  materialHighlight: {fileID: 2100000, guid: 51aaa76f2859b844483575fc763a5ed4, type: 2}
 --- !u!4 &96477956
 Transform:
   m_ObjectHideFlags: 0

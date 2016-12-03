@@ -19,6 +19,11 @@ namespace Scripts
         private float lineOfNoReturn;
         [SerializeField]
         private float lineOfOpenSea;
+        [Header("Materials")]
+        [SerializeField]
+        private Material materialNormal;
+        [SerializeField]
+        private Material materialHighlight;
 
         private void Start()
         {
@@ -27,7 +32,17 @@ namespace Scripts
             Global.ShipSpeedWithDestionation = shipSpeedWithDestination;
             Global.LineOfNoReturn = lineOfNoReturn;
             Global.LineOfOpenSea = lineOfOpenSea;
+
+            Global.MaterialNormal = materialNormal;
+            Global.MaterialHighlight = materialHighlight;
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            Start();
+        }
+#endif
 
         private void Update()
         {

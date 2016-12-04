@@ -12,6 +12,12 @@ namespace Scripts {
         private ShipType type;
 
         [SerializeField]
+        private Material materialNormal;
+
+        [SerializeField]
+        private Material materialHighlight;
+
+        [SerializeField]
         private GameObject dockPosition;
         public GameObject DockPosition { get { return dockPosition; } }
 
@@ -73,9 +79,34 @@ namespace Scripts {
                 Global.CurrentSelectedShip.SetDestination(this);
                 Global.CurrentSelectedShip.Deselect();
             }
-            else if (undockedShip != null)
+            else
+            {
+                UndockCurrentShip();
+            }
+        }
+
+        public void OnMouseEnter()
+        {
+            ChangeRenderers(materialHighlight);
+        }
+
+        public void OnMouseExit()
+        {
+            ChangeRenderers(materialNormal);
+        }
+
+        private void ChangeRenderers(Material mat)
+        {
+            foreach (var renderer in GetComponentsInChildren<Renderer>())
+                renderer.material = mat;
+        }
+
+        public void UndockCurrentShip()
+        {
+            if (undockedShip != null)
             {
                 undockedShip.Undock();
+                undockedShip = null;
             }
         }
 

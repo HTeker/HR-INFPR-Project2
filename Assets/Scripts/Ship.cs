@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 namespace Scripts
 {
@@ -33,7 +34,12 @@ namespace Scripts
                 Global.CurrentSelectedShip.Deselect();
 
             if (!isLoaded)
+            {
+                if (!isUndocked)
+                    destination.UndockCurrentShip();
+
                 return;
+            }
 
             if (transform.position.x > Global.LineOfNoReturn)
                 return;
@@ -45,6 +51,8 @@ namespace Scripts
         public void Deselect()
         {
             Global.CurrentSelectedShip = null;
+
+            ChangeRenderers(Global.MaterialNormal);
         }
 
         public void Select()
@@ -53,6 +61,32 @@ namespace Scripts
                 Global.CurrentSelectedShip.Deselect();
 
             Global.CurrentSelectedShip = this;
+        }
+
+        public void OnMouseEnter()
+        {
+            if (!isLoaded) {
+                if (isUndocked)
+                    return;
+                else
+                    destination.OnMouseEnter();
+            }
+
+            if (isLoaded && transform.position.x > Global.LineOfNoReturn)
+                return;
+
+            ChangeRenderers(Global.MaterialHighlight);
+        }
+
+        public void OnMouseExit()
+        {
+            if (!isLoaded && !isUndocked)
+                destination.OnMouseExit();
+
+            if (Global.CurrentSelectedShip == this)
+                return;
+
+            ChangeRenderers(Global.MaterialNormal);
         }
 
         public void ReadyToUndock()
@@ -67,10 +101,10 @@ namespace Scripts
             // TODO increase score
         }
 
-        // Use this for initialization
-        void Start()
+        private void ChangeRenderers(Material mat)
         {
-
+            foreach (var renderer in GetComponentsInChildren<Renderer>())
+                renderer.material = mat;
         }
 
         // Update is called once per frame
@@ -86,6 +120,8 @@ namespace Scripts
                     if (transform.position.x > Global.LineOfNoReturn)
                         if (Global.CurrentSelectedShip == this)
                             Deselect();
+                        else
+                            ChangeRenderers(Global.MaterialNormal);
 
                     if (Vector3.Distance(transform.position, destination.DockPosition.transform.position) < Global.ShipSpeedWithDestionation * Time.deltaTime)
                         destination.Enter(this);

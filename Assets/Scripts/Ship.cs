@@ -110,6 +110,9 @@ namespace Scripts
         // Update is called once per frame
         void Update()
         {
+            if (Global.GameOver)
+                return;
+
             if (isLoaded)
             {
                 if (destination)
@@ -132,7 +135,7 @@ namespace Scripts
                     {
                         this.LogMessage("Ship has no destionation given in time");
                         Destroy(gameObject);
-                        // TODO decrease score
+                        Global.scoreController.AmountOfFailures++;
                     }
                     transform.position += Global.ShipSpeed * Time.deltaTime * transform.forward;
                 }

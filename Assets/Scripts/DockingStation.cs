@@ -68,6 +68,7 @@ namespace Scripts {
             {
                 this.LogMessage("Ship reached wrong dock");
                 Destroy(ship.gameObject);
+                Global.scoreController.AmountOfFailures++;
                 // TODO Decrease score
             }
         }
@@ -112,6 +113,9 @@ namespace Scripts {
 
         void Update()
         {
+            if (Global.GameOver)
+                return;
+
             float? timeLeft = null;
             if (dockedShips.Count > 0)
             {
@@ -121,7 +125,7 @@ namespace Scripts {
                     if (undockedShip != null)
                     {
                         Destroy(undockedShip.gameObject);
-                        // TODO Decrease score
+                        // TODO: reduce score
                     }
 
                     undockedShip = dockedShips.Dequeue();

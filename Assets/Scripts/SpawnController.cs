@@ -54,7 +54,7 @@ namespace Scripts
             yield return new WaitForSeconds(startWait);
 
             // TODO: Deze conditie dient te zijn: zolang het spel doorgaat.
-            while (true)
+            while (!Global.GameOver)
             {
                 var type = chooseType();
 

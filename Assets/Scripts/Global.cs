@@ -18,5 +18,8 @@ namespace Scripts
 
         public static Material MaterialNormal { get; set; }
         public static Material MaterialHighlight { get; set; } 
+
+        public static ScoreController scoreController { get; set; }
+        public static bool GameOver { get; set; }
     }
 }

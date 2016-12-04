@@ -63,13 +63,14 @@ namespace Scripts {
                 dockedShips.Enqueue(ship);
                 ship.TimeOfArrival = Global.GameTime;
                 ship.gameObject.SetActive(false);
+                Global.pointController.IncreaseScore();
             }
             else
             {
                 this.LogMessage("Ship reached wrong dock");
                 Destroy(ship.gameObject);
                 Global.scoreController.AmountOfFailures++;
-                // TODO Decrease score
+                Global.pointController.DecreaseScore();
             }
         }
 
@@ -125,7 +126,7 @@ namespace Scripts {
                     if (undockedShip != null)
                     {
                         Destroy(undockedShip.gameObject);
-                        // TODO: reduce score
+                        Global.pointController.DecreaseScore();
                     }
 
                     undockedShip = dockedShips.Dequeue();

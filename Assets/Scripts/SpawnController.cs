@@ -52,8 +52,7 @@ namespace Scripts
         IEnumerator SpawnWaves()
         {
             yield return new WaitForSeconds(startWait);
-
-            // TODO: Deze conditie dient te zijn: zolang het spel doorgaat.
+            
             while (!Global.GameOver)
             {
                 var type = chooseType();

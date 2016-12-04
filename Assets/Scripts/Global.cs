@@ -20,6 +20,7 @@ namespace Scripts
         public static Material MaterialHighlight { get; set; } 
 
         public static ScoreController scoreController { get; set; }
+        public static PointController pointController { get; set; }
         public static bool GameOver { get; set; }
     }
 }

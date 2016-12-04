@@ -98,7 +98,7 @@ namespace Scripts
         public void Undock()
         {
             isUndocked = true;
-            // TODO increase score
+            Global.pointController.IncreaseScore();
         }
 
         private void ChangeRenderers(Material mat)

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Scripts
+namespace Scripts.Epic1
 {
     public class SelectionController : MonoBehaviour
     {

@@ -5,7 +5,8 @@ using System;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace Scripts {
+namespace Scripts.Epic1
+{
     public class DockingStation : MonoBehaviour
     {
         [SerializeField]

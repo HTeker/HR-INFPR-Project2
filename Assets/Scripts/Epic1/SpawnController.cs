@@ -6,7 +6,7 @@ using System.Linq;
 
 using Random = UnityEngine.Random;
 
-namespace Scripts
+namespace Scripts.Epic1
 {
     // Deze class zorgt ervoor dat schepen in willekeurige kleuren en posities worden gecreeërd in het speelveld 
     public class SpawnController : MonoBehaviour

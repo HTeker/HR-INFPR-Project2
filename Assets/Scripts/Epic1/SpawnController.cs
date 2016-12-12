@@ -44,7 +44,7 @@ namespace Scripts.Epic1
         {
             if (spawnWait > 0.3f)
             {
-                spawnWait -= 0.1f;
+                spawnWait -= 0.015f;
             }
         }
 

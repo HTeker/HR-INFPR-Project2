@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-namespace Scripts
+namespace Scripts.Epic1
 {
     public class ScoreController : MonoBehaviour
     {

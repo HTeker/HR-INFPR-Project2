@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 
-namespace Scripts
+namespace Scripts.Epic1
 {
     public class Ship : MonoBehaviour
     {

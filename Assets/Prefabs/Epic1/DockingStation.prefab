@@ -545,6 +545,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  materialNormal: {fileID: 0}
+  materialHighlight: {fileID: 0}
   dockPosition: {fileID: 1000011710320312}
   undockPosition: {fileID: 1000011208715648}
 --- !u!222 &222000012663120586

@@ -572,7 +572,7 @@ MonoBehaviour:
   GreenShip: {fileID: 1000010773839422, guid: b1e8f4eaa7611074f9925e4e26c498e7, type: 2}
   BlueShip: {fileID: 1000012537301766, guid: d06a1e16da141f54f9d748ae754c1631, type: 2}
   spawnValues: {x: 30, y: 0, z: 0}
-  spawnWait: 3
+  spawnWait: 5
   startWait: 1
 --- !u!114 &96477959
 MonoBehaviour:

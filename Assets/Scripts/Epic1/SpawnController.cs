@@ -42,9 +42,9 @@ namespace Scripts.Epic1
         // Om de vijf seconden wordt de productiesnelheid van de schepen met 0,1 seconde verhoogt met een minimumsnelheid van 0,3 seconde
         private void UpdatePerFiveSeconds()
         {
-            if (spawnWait > 0.3f)
+            if (spawnWait > 3)
             {
-                spawnWait -= 0.015f;
+                spawnWait -= 0.1f / 3;
             }
         }
 

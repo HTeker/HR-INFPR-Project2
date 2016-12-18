@@ -6,6 +6,7 @@ TagManager:
   tags:
   - DockingStation
   - Ship
+  - Container
   layers:
   - Default
   - TransparentFX

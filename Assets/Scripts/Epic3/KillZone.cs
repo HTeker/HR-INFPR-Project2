@@ -13,8 +13,9 @@ namespace Scripts.Epic3
         }
 
         // Update is called once per frame
-        void Update()
+        void Update() 
         {
+			
 
         }
 
@@ -24,6 +25,8 @@ namespace Scripts.Epic3
             {
                 ContainerBehaviour containerBehaviour = col.GetComponent<ContainerBehaviour>();
                 if (containerBehaviour.badcontainer)
+
+
                 {
                     //It's BAD!
                     //Kill points..

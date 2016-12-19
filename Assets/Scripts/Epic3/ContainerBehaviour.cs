@@ -18,8 +18,12 @@ namespace Scripts.Epic3
         // Update is called once per frame
         void Update()
         {
-			if (transform.position.z >= 100)
+			if (transform.position.z >= 100) 
+			{
+				badcontainer = 1
+
 				Destroy (gameObject);
+			}
 			transform.Translate(Vector3.forward * Time.deltaTime * speed);
         }
 

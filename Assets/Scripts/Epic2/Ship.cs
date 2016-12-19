@@ -27,12 +27,41 @@ namespace Scripts.Epic2
                     levelList.Add(xList);
                 }
                 containers.Add(levelList);
-            }  
+            }
+
+            CalculateBalance();
         }
 
-        internal static void GetTarget(Vector3 postion, Vector2 direction, bool attetched)
+        public void CalculateBalance()
         {
-            throw new NotImplementedException();
+            var balanceLeft = 0;
+            var balanceRight = 0;
+
+            foreach (var layer in containers)
+            {
+                foreach(var column in layer)
+                {
+                    var middle = (column.Count - 1) / 2.0f;
+
+                    for (var cell = 0; cell < column.Count; ++ cell)
+                    {
+                        if (cell < middle)
+                        {
+                            // Right
+                            balanceRight += column[cell].childCount;
+                        }
+                        else if (cell > middle)
+                        {
+                            // Left
+                            balanceLeft += column[cell].childCount;
+                        }
+                    }
+                }
+
+                var rot = transform.localEulerAngles;
+                rot.z = balanceRight - balanceLeft;
+                transform.localEulerAngles = rot;
+            }
         }
     }
 }

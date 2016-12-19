@@ -176,8 +176,13 @@ namespace Scripts.Epic2
                         if (!hasLoad && s2 < s1)
                         {
                             hasLoad = true;
-                            containers[(int)target.z][(int)target.x][(int)target.y].GetChild(0).parent = attatchPoint;
-                            attatchPoint.GetChild(0).localPosition = Vector3.zero;
+
+                            var container = containers[(int)target.z][(int)target.x][(int)target.y].GetChild(0);
+                            container.parent = attatchPoint;
+                            container.localPosition = Vector3.zero;
+                            container.localEulerAngles = Vector3.zero;
+
+                            targetShip.CalculateBalance();
                         }
 
                         if (s1 <= 0)
@@ -224,15 +229,20 @@ namespace Scripts.Epic2
                         if (hasLoad && s2 < s1)
                         {
                             hasLoad = false;
+                            var container = attatchPoint.GetChild(0);
+
                             if (target.z == containers.Count)
                             {
                                 // TODO plaats op kade
-                                Destroy(attatchPoint.GetChild(0).gameObject);
+                                Destroy(container.gameObject);
                             }
                             else
                             {
-                                attatchPoint.GetChild(0).parent = containers[(int)target.z][(int)target.x][(int)target.y];
-                                containers[(int)target.z][(int)target.x][(int)target.y].GetChild(0).localPosition = Vector3.zero;
+                                container.parent = containers[(int)target.z][(int)target.x][(int)target.y];
+                                container.localPosition = Vector3.zero;
+                                container.localEulerAngles = Vector3.zero;
+
+                                targetShip.CalculateBalance();
                             }
                         }
 

@@ -7,17 +7,20 @@ namespace Scripts.Epic3
     {
 
         public bool badcontainer;
+		public float speed;
 
         // Use this for initialization
         void Start()
         {
-
+			
         }
 
         // Update is called once per frame
         void Update()
         {
-            transform.Translate(Vector3.forward * Time.deltaTime * 7.5f);
+			if (transform.position.z >= 100)
+				Destroy (gameObject);
+			transform.Translate(Vector3.forward * Time.deltaTime * speed);
         }
 
         void OnMouseDown()

@@ -8,11 +8,14 @@ namespace Scripts.Epic3
 
         public GameObject redContainer, greenContainer, blueContainer;
         public Transform spawnPosition;
+		public float currentContainerSpeed = 7.5f;
+		public float containerSpeedModifier = 0.2f; 
 
         private float delaySpawn = 3;
         private float lastSpawnTime;
         private float lastMultiplierTime;
         private float delayMultiplier = 5;
+
 
         // Use this for initialization
         void Start()
@@ -34,13 +37,16 @@ namespace Scripts.Epic3
                 if (delaySpawn > 1)
                 {
                     delaySpawn -= 0.1f;
+
                 }
+				currentContainerSpeed += containerSpeedModifier;
             }
         }
 
         private void RandomSpawn()
         {
-            Instantiate(SelectRandomContainer(), spawnPosition.position, spawnPosition.rotation);
+			GameObject container = (GameObject)Instantiate(SelectRandomContainer(), spawnPosition.position, spawnPosition.rotation);
+			container.GetComponent<ContainerBehaviour> ().speed = currentContainerSpeed;
         }
 
         private GameObject SelectRandomContainer()

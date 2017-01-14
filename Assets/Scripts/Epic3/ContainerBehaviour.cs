@@ -20,7 +20,7 @@ namespace Scripts.Epic3
         {
 			if (transform.position.z >= 100) 
 			{
-                badcontainer = true;
+				badcontainer = true;
 
 				Destroy (gameObject);
 			}

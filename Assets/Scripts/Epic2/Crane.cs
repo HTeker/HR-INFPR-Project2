@@ -36,14 +36,34 @@ namespace Scripts.Epic2
         public Transform cable;
         public Transform attatchPoint;
 
+        public bool isHuman;
+
         private Vector3 target;
+        private Vector3 oldTarget;
         private Vector3 targetPosition;
 
         private bool hasLoad;
 
         private float progress = 0;
 
+        // Kleur welke de speler op moet pakken
+        private ShipType targetColor;
+
         private void Start()
+        {
+            targetColor = targetShip.GetTargetType();
+        }
+
+        private void ProcessHumanInput()
+        {
+            target.x += (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) ? 1 : 0;
+            target.x -= (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) ? 1 : 0;
+
+            target.y -= (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) ? 1 : 0;
+            target.y += (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) ? 1 : 0;
+        }
+
+        private void ProcessAIInput()
         {
 
         }
@@ -62,7 +82,7 @@ namespace Scripts.Epic2
                     target.x = containersTopLayer.IndexOf(containersTopLayer.Aggregate((x, y) => Math.Abs(x[0].position.z - crane.position.z) < Math.Abs(y[0].position.z - crane.position.z) ? x : y));
                     target.y = containersTopLayer[0].Count;
 
-                    state = State.Input;
+                    state = State.Move;
                     break;
                 case State.Input:
                     if (Input.GetKey(KeyCode.Space))
@@ -71,14 +91,13 @@ namespace Scripts.Epic2
                         break;
                     }
 
-                    var oldTarget = target;
+                    oldTarget = target;
 
-                    target.x += (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) ? 1 : 0;
-                    target.x -= (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) ? 1 : 0;
-
-                    target.y -= (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) ? 1 : 0;
-                    target.y += (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) ? 1 : 0;
-
+                    if (isHuman)
+                        ProcessHumanInput();
+                    else
+                        ProcessAIInput();
+                    
                     if (target != oldTarget)
                     {
                         target.x = Mathf.Clamp(target.x, 0, containersTopLayer.Count - 1);
@@ -118,8 +137,50 @@ namespace Scripts.Epic2
                             cab.localPosition.x,
                             cab.localPosition.y,
                             targetPosition.z);
-                        state = State.Input;
 
+                        // Dehighlight old container
+                        if (oldTarget.y < containersTopLayer[0].Count)
+                        {
+                            oldTarget.z = -1;
+                            for (int layer = 0; layer < containers.Count; ++layer)
+                            {
+                                if (containers[layer][(int)oldTarget.x][(int)oldTarget.y].childCount > 0)
+                                {
+                                    oldTarget.z = layer;
+                                    break;
+                                }
+                            }
+
+                            if (oldTarget.z != -1)
+                            {
+                                var hc = containers[(int)oldTarget.z][(int)oldTarget.x][(int)oldTarget.y].GetComponentInChildren<HighlightController>();
+                                if (hc)
+                                    hc.Normal();
+                            }
+                        }
+
+                        // highlight contrainer
+                        if (!hasLoad && target.y < containersTopLayer[0].Count)
+                        {
+                            target.z = -1;
+                            for (int layer = 0; layer < containers.Count; ++layer)
+                            {
+                                if (containers[layer][(int)target.x][(int)target.y].childCount > 0)
+                                {
+                                    target.z = layer;
+                                    break;
+                                }
+                            }
+
+                            if (target.z != -1)
+                            {
+                                var hc = containers[(int)target.z][(int)target.x][(int)target.y].GetComponentInChildren<HighlightController>();
+                                if (hc)
+                                    hc.Highlight();
+                            }
+                        }
+
+                        state = State.Input;
                     }
                     else
                     {
@@ -161,35 +222,6 @@ namespace Scripts.Epic2
 
                     state = State.Input;
                     break;
-                case State.TakeContainerProgress:
-                    {
-                        var t = Time.deltaTime / ((target.z + 0.5f) * grabSpeed) * Mathf.PI;
-                        progress += t;
-
-                        var s1 = Mathf.Sin(progress);
-                        var s2 = Mathf.Sin(progress + t);
-
-                        var pos = cable.localPosition;
-                        pos.y = Mathf.Max(s1, 0) * targetPosition.y;
-                        cable.localPosition = pos;
-
-                        if (!hasLoad && s2 < s1)
-                        {
-                            hasLoad = true;
-
-                            var container = containers[(int)target.z][(int)target.x][(int)target.y].GetChild(0);
-                            container.parent = attatchPoint;
-                            container.localPosition = Vector3.zero;
-                            container.localEulerAngles = Vector3.zero;
-
-                            targetShip.CalculateBalance();
-                        }
-
-                        if (s1 <= 0)
-                            state = State.Input;
-
-                        break;
-                    }
                 case State.DropContainer:
                     if (target.y >= containers.Count)
                     {
@@ -214,43 +246,80 @@ namespace Scripts.Epic2
                     state = State.DropContainerProgress;
 
                     break;
+                case State.TakeContainerProgress:
                 case State.DropContainerProgress:
+                    var t = Time.deltaTime / ((target.z + 0.5f) * grabSpeed) * Mathf.PI;
+                    progress += t;
+
+                    var s1 = Mathf.Sin(progress);
+                    var s2 = Mathf.Sin(progress + t);
+
+                    var pos = cable.localPosition;
+                    pos.y = Mathf.Max(s1, 0) * targetPosition.y;
+                    cable.localPosition = pos;
+
+                    // Moment dat de kabel op het laagste punt staat
+                    Transform container;
+                    if (s2 < s1)
                     {
-                        var t = Time.deltaTime / ((target.z + 0.5f) * grabSpeed) * Mathf.PI;
-                        progress += t;
-
-                        var s1 = Mathf.Sin(progress);
-                        var s2 = Mathf.Sin(progress + t);
-
-                        var pos = cable.localPosition;
-                        pos.y = Mathf.Max(s1, 0) * targetPosition.y;
-                        cable.localPosition = pos;
-
-                        if (hasLoad && s2 < s1)
+                        switch (state)
                         {
-                            hasLoad = false;
-                            var container = attatchPoint.GetChild(0);
+                            case State.TakeContainerProgress:
+                                if (hasLoad)
+                                    break;
+                                    
+                                hasLoad = true;
 
-                            if (target.z == containers.Count)
-                            {
-                                // TODO plaats op kade
-                                Destroy(container.gameObject);
-                            }
-                            else
-                            {
-                                container.parent = containers[(int)target.z][(int)target.x][(int)target.y];
+                                container = containers[(int)target.z][(int)target.x][(int)target.y].GetChild(0);
+                                container.parent = attatchPoint;
                                 container.localPosition = Vector3.zero;
                                 container.localEulerAngles = Vector3.zero;
+                                break;
+                            case State.DropContainerProgress:
+                                if (!hasLoad)
+                                    break;
 
-                                targetShip.CalculateBalance();
-                            }
+                                hasLoad = false;
+                                container = attatchPoint.GetChild(0);
+
+                                if (target.z == containers.Count)
+                                {
+                                    // TODO plaats op kade
+                                    Destroy(container.gameObject);
+
+                                    targetShip.containerCount[container.GetComponent<Container>().Type] --;
+
+                                    if (targetShip.IsShipEmpty())
+                                    {
+                                        // Schip is leeg
+                                    }
+                                    else
+                                    {
+                                        targetColor = targetShip.GetTargetType();
+                                    }
+                                }
+                                else
+                                {
+                                    container.parent = containers[(int)target.z][(int)target.x][(int)target.y];
+                                    container.localPosition = Vector3.zero;
+                                    container.localEulerAngles = Vector3.zero;
+                                }
+                                break;
                         }
-
-                        if (s1 <= 0)
-                            state = State.Input;
-
-                        break;
                     }
+
+                    // Moment dat de kabel weer terug is
+                    if (s1 <= 0)
+                    {
+                        targetShip.CalculateBalance();
+                        if (Math.Abs(targetShip.Balance) > targetShip.MaxBalance)
+                        {
+                            // Schip is unbalnaced
+                        }
+                        state = State.Input;
+                    }
+
+                    break;
             }
         }
     }

@@ -10,6 +10,8 @@ GameObject:
   - 4: {fileID: 400000}
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
+  - 114: {fileID: 114000011114417212}
+  - 114: {fileID: 114000010573596078}
   m_Layer: 0
   m_Name: Prop_Container_03
   m_TagString: Untagged
@@ -77,3 +79,28 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}
   m_IsPrefabParent: 1
+--- !u!114 &114000010573596078
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b178c9de317dba498cbe074d0e3a07c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 1
+--- !u!114 &114000011114417212
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da3372f66e782b74d9943f02d8c78fe6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normal: {fileID: 2100000, guid: 46f69b2efbd76a744906e46f98d0e35b, type: 2}
+  highlight: {fileID: 2100000, guid: 51aaa76f2859b844483575fc763a5ed4, type: 2}

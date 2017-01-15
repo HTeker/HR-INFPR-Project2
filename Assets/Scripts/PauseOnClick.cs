@@ -2,31 +2,23 @@
 using System.Collections;
 
 public class PauseOnClick : MonoBehaviour {
+    
+    public GameObject PauseScreen;
 
-    bool paused = false;
-
-    void OnGUI()
+    private void Start()
     {
-        if(paused)
-        {
-            GUILayout.Label("Game is paused!");
-            if (GUILayout.Button("Click me to unpaue"))
-                //paused = togglePause();
-                togglePause();
-        }
+        PauseScreen.SetActive(false);
     }
 
-    public void togglePause()
+    public void Pause()
     {
-        if (Time.timeScale == 0f)
-        {
-            Time.timeScale = 1f;
-            //return (false);
-        }
-        else
-        {
-            Time.timeScale = 0f;
-           // return (true);
-        }
+        Time.timeScale = 0f;
+        PauseScreen.SetActive(true);
+    }
+
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+        PauseScreen.SetActive(false);
     }
 }

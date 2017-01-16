@@ -86,6 +86,7 @@ namespace Scripts.Epic1
             {
                 UndockCurrentShip();
             }
+            Global.selectSound.Play();
         }
 
         public void OnMouseEnter()

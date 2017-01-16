@@ -24,6 +24,8 @@ namespace Scripts.Epic1
         private Material materialNormal;
         [SerializeField]
         private Material materialHighlight;
+        [SerializeField]
+        private AudioSource selectSound;
 
         private void Start()
         {
@@ -35,6 +37,8 @@ namespace Scripts.Epic1
 
             Global.MaterialNormal = materialNormal;
             Global.MaterialHighlight = materialHighlight;
+
+            Global.selectSound = selectSound;
         }
 
 #if UNITY_EDITOR

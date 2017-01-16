@@ -9,7 +9,7 @@ public class LoadOnClick : MonoBehaviour {
 
     public void Start()
     {
-        canvasPanelController.SwitchToPanelByName("Panel_MainMenu");
+        canvasPanelController.SwitchToPanelByName("Canvas_MainMenu");
     }
 
 	public void LoadScene(int scene)

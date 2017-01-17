@@ -61,6 +61,7 @@ namespace Scripts.Epic1
                 Global.CurrentSelectedShip.Deselect();
 
             Global.CurrentSelectedShip = this;
+            Global.selectSound.Play();
         }
 
         public void OnMouseEnter()

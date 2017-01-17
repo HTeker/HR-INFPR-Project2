@@ -22,5 +22,7 @@ namespace Scripts.Epic1
         public static ScoreController scoreController { get; set; }
         public static PointController pointController { get; set; }
         public static bool GameOver { get; set; }
+
+        public static AudioSource selectSound { get; set; }
     }
 }

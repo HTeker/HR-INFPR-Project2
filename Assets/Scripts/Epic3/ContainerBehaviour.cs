@@ -8,6 +8,7 @@ namespace Scripts.Epic3
 
         public bool badcontainer;
 		public float speed;
+        public AudioSource selectAudio;
 
         // Use this for initialization
         void Start()
